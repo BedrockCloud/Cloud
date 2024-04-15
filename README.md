@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/BedrockCloud/Cloud.svg?style=svg)]
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/RB8CH5cU2G6riTLsFcvAZ3/5Hem7qs9S7AGajy3qLUfkq/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/RB8CH5cU2G6riTLsFcvAZ3/5Hem7qs9S7AGajy3qLUfkq/tree/master)
 
 # Requirements
 - Java 17 or higher
