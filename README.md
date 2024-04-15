@@ -1,4 +1,4 @@
-[![](https://jitci.com/gh/BedrockCloud/Cloud/svg)](https://jitci.com/gh/BedrockCloud/Cloud)
+[![CircleCI](https://circleci.com/gh/BedrockCloud/Cloud.svg?style=svg)]
 
 # Requirements
 - Java 17 or higher
