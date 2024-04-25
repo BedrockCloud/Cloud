@@ -86,10 +86,10 @@ public class Logger {
     public enum LogLevel {
         INFO("INFO", Colors.GREEN),
         ERROR("ERROR", Colors.RED),
-        DEBUG("DEBUG", Colors.BLUE1),
+        DEBUG("DEBUG", Colors.LIGHT_BLUE),
         WARNING("WARNING", Colors.YELLOW),
         COMMAND("COMMAND", Colors.CYAN),
-        EXCEPTION("EXCEPTION", Colors.RED1);
+        EXCEPTION("EXCEPTION", Colors.LIGHT_RED);
 
         private final String name;
         private final Colors color;
