@@ -38,7 +38,7 @@ jobs:
           prerelease: false
           title: "${{ steps.metadata.outputs.VERSION }}"
           files: |
-            target/Cloud.jar
+            target/Cloud-1.0-SNAPSHOT.jar
       - name: Deploy to GitHub
         run: mvn --batch-mode -DuseGitHubPackages=true deploy
         env:

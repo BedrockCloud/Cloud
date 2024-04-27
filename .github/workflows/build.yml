@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bedrockcloud
-          path: target/Cloud.jar
+          path: target/Cloud-1.0-SNAPSHOT.jar
       - name: Deploy to GitHub
         run: mvn --batch-mode -DuseGitHubPackages=true deploy
         env:
