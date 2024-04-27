@@ -26,9 +26,6 @@ jobs:
           name: bedrockcloud
           path: target/Cloud-1.0-SNAPSHOT.jar
       - name: Deploy to GitHub
-        permissions:
-          contents: read
-          packages: write
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
