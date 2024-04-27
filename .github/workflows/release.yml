@@ -40,6 +40,6 @@ jobs:
           files: |
             target/Cloud-1.0-SNAPSHOT.jar
       - name: Deploy to GitHub
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode -DuniqueVersion=false deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
