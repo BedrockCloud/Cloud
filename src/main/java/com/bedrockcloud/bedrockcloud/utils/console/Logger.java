@@ -10,7 +10,6 @@ import java.util.Date;
 
 public class Logger {
     private File cloudLog;
-    private int maxSizeBytes = 12 * 1024 * 1024;
 
     public Logger() {
         this.cloudLog = new File("./local/cloud.log");
@@ -44,7 +43,7 @@ public class Logger {
 
     private static String getFullStackTrace(@NotNull final Throwable t) {
         try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
-            pw.println(t.toString());
+            pw.println(t);
             t.printStackTrace(pw);
             return sw.toString();
         } catch (Exception e) {
@@ -55,10 +54,10 @@ public class Logger {
 
     private void log(final LogLevel level, final String message) {
         String formattedMessage = String.format("%s[%s] » %s",
-                Cloud.prefix,
-                level.getName(),
+                Colors.toColor(Cloud.prefix),
+                Colors.toColor(level.getColorJavaCode() + level.getName() + Colors.RESET.getJavaCode()),
                 message);
-        System.out.println(Colors.toColor(formattedMessage));
+        System.out.println(formattedMessage);
 
         try (FileWriter cloudLogWriter = new FileWriter(this.cloudLog, true)) {
             File file = new File("./local/config.yml");
@@ -69,6 +68,7 @@ public class Logger {
             cloudLogWriter.append(plainMessage).append("\n");
             cloudLogWriter.flush();
 
+            int maxSizeBytes = 12 * 1024 * 1024;
             if (this.cloudLog.length() > maxSizeBytes) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
                 String currentDate = dateFormat.format(new Date());
@@ -84,21 +84,27 @@ public class Logger {
     }
 
     public enum LogLevel {
-        INFO("INFO"),
-        ERROR("ERROR"),
-        DEBUG("DEBUG"),
-        WARNING("WARNING"),
-        COMMAND("COMMAND"),
-        EXCEPTION("EXCEPTION");
+        INFO("INFO", Colors.GREEN),
+        ERROR("ERROR", Colors.RED),
+        DEBUG("DEBUG", Colors.LIGHT_BLUE),
+        WARNING("WARNING", Colors.YELLOW),
+        COMMAND("COMMAND", Colors.CYAN),
+        EXCEPTION("EXCEPTION", Colors.LIGHT_RED);
 
         private final String name;
+        private final Colors color;
 
-        LogLevel(String name) {
+        LogLevel(String name, Colors color) {
             this.name = name;
+            this.color = color;
         }
 
         public String getName() {
             return name;
+        }
+
+        public String getColorJavaCode() {
+            return color.getJavaCode();
         }
     }
 }

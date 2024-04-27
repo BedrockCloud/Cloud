@@ -7,19 +7,19 @@ public enum Colors {
     YELLOW("yellow", 'e', "33m"),
     MAGENTA("magenta", 'd', "35m"),
     CYAN("cyan", 'b', "36m"),
-    RESET("reset", 'r', "0m"),
-    BLUE1("blue1", '1', "34m"),
-    GREEN1("green1", '2', "32m"),
-    CYAN1("cyan1", '3', "36m"),
-    RED1("red1", '4', "31m"),
-    MAGENTA1("magenta", '5', "35m"),
-    YELLOW1("yellow", '6', "33m"),
-    GRAY1("gray1", '7', "37m"),
-    GRAY2("gray2", '8', "37m"),
-    BLUE2("blue2", '9', "34m"),
+    GRAY("gray", '7', "37m"),
+    DARK_GRAY("dark_gray", '8', "37m"),
+    DARK_BLUE("dark_blue", '9', "34m"),
+    LIGHT_BLUE("light_blue", '1', "34m"),
+    LIGHT_GREEN("light_green", '2', "32m"),
+    LIGHT_CYAN("light_cyan", '3', "36m"),
+    LIGHT_RED("light_red", '4', "31m"),
+    LIGHT_MAGENTA("light_magenta", '5', "35m"),
+    LIGHT_YELLOW("light_yellow", '6', "33m"),
     BOLD("bold", 'l', "1m"),
     RESET_BOLD("reset_bold", 'r', "21m"),
-    UNDERLINED("underlined", '_', "4m");
+    UNDERLINED("underlined", '_', "4m"),
+    RESET("reset", 'r', "0m");
 
     private final String name;
     private final String javaCode;
