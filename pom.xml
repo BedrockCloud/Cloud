@@ -6,7 +6,6 @@
 
     <groupId>com.bedrockcloud</groupId>
     <artifactId>Cloud</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
