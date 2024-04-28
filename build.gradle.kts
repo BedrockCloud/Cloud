@@ -17,12 +17,15 @@ repositories {
         url = uri("https://repo.maven.apache.org/maven2/")
     }
     maven {
+        isAllowInsecureProtocol = true
         url = uri("http://185.117.250.237:8081/repository/maven-central/")
     }
     maven {
+        isAllowInsecureProtocol = true
         url = uri("http://185.117.250.237:8081/repository/maven-releases/")
     }
     maven {
+        isAllowInsecureProtocol = true
         url = uri("http://185.117.250.237:8081/repository/maven-snapshots/")
     }
 }
