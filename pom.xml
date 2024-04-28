@@ -14,42 +14,6 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/releases</url>
-        </repository>
-    </distributionManagement>
-
-    <profiles>
-        <profile>
-            <id>sonatype</id>
-            <activation>
-                <property>
-                    <name>deploy</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <distributionManagement>
-                <repository>
-                    <id>ossrh</id>
-                    <name>Central Repository OSSRH</name>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
-            <properties>
-                <!--suppress UnresolvedMavenProperty -->
-                <env.OSSRH_USERNAME>${env.MAVEN_USERNAME}</env.OSSRH_USERNAME>
-                <!--suppress UnresolvedMavenProperty -->
-                <env.OSSRH_TOKEN>${env.MAVEN_PASSWORD}</env.OSSRH_TOKEN>
-            </properties>
-        </profile>
-    </profiles>
-
     <repositories>
         <repository>
             <name>jcenter</name>
