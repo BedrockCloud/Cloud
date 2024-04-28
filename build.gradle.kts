@@ -9,6 +9,7 @@ plugins {
 
 repositories {
     mavenLocal()
+    mavenCentral()
     maven {
         url = uri("https://jcenter.bintray.com")
     }
