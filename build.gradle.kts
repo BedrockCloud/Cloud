@@ -43,7 +43,7 @@ dependencies {
 group = "com.bedrockcloud"
 version = "1.0-SNAPSHOT"
 description = "Cloud"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 publishing {
     publications.create<MavenPublication>("maven") {
