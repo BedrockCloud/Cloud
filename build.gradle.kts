@@ -19,9 +19,8 @@ repositories {
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+    java.sourceCompatibility = JavaVersion.VERSION_17
+    java.targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
@@ -37,7 +36,8 @@ dependencies {
     api(libs.org.jline.jline.reader)
     api(libs.org.ow2.asm.asm)
     testImplementation(libs.junit.junit)
-    annotationProcessor(libs.org.projectlombok.lombok)
+    implementation("org.jetbrains:annotations:24.0.1")
+    annotationProcessor("org.projectlombok:lombok")
 }
 
 group = "com.bedrockcloud"
