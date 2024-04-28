@@ -15,37 +15,15 @@
     </properties>
 
     <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <name>Central Repository OSSRH</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
         </repository>
     </distributionManagement>
-
-    <profiles>
-        <profile>
-            <id>sonatype</id>
-            <activation>
-                <property>
-                    <name>deploy</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <distributionManagement>
-                <repository>
-                    <id>ossrh</id>
-                    <name>Central Repository OSSRH</name>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
-            <properties>
-                <!--suppress UnresolvedMavenProperty -->
-                <env.OSSRH_USERNAME>${secrets.OSSRH_USERNAME}</env.OSSRH_USERNAME>
-                <!--suppress UnresolvedMavenProperty -->
-                <env.OSSRH_TOKEN>${secrets.OSSRH_USERNAME}</env.OSSRH_TOKEN>
-            </properties>
-        </profile>
-    </profiles>
 
     <repositories>
         <repository>
