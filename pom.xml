@@ -43,9 +43,9 @@
             </distributionManagement>
             <properties>
                 <!--suppress UnresolvedMavenProperty -->
-                <env.OSSRH_USERNAME>${env.OSSRH_USERNAME}</env.OSSRH_USERNAME>
+                <env.OSSRH_USERNAME>${env.MAVEN_USERNAME}</env.OSSRH_USERNAME>
                 <!--suppress UnresolvedMavenProperty -->
-                <env.OSSRH_TOKEN>${env.OSSRH_USERNAME}</env.OSSRH_TOKEN>
+                <env.OSSRH_TOKEN>${env.MAVEN_PASSWORD}</env.OSSRH_TOKEN>
             </properties>
         </profile>
     </profiles>
