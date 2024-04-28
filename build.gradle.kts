@@ -5,7 +5,6 @@
 plugins {
     `java-library`
     `maven-publish`
-    `maven-publish`
 }
 
 repositories {
