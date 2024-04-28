@@ -1,6 +1,8 @@
 package com.bedrockcloud.bedrockcloud.rest;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
+import com.bedrockcloud.bedrockcloud.rest.handler.maintenance.MaintenanceAddRequestHandler;
+import com.bedrockcloud.bedrockcloud.rest.handler.maintenance.MaintenanceRemoveRequestHandler;
 import com.bedrockcloud.bedrockcloud.rest.handler.player.PlayerInfoRequestHandler;
 import com.bedrockcloud.bedrockcloud.rest.handler.player.PlayerKickRequestHandler;
 import com.bedrockcloud.bedrockcloud.rest.handler.player.PlayerListRequestHandler;
@@ -62,6 +64,10 @@ public class App {
             getServer().createContext("/api/v1/plugin/enable/", new PluginEnableRequestHandler()).setAuthenticator(authenticator);
             getServer().createContext("/api/v1/plugin/disable/", new PluginDisableRequestHandler()).setAuthenticator(authenticator);
             getServer().createContext("/api/v1/plugin/list/", new PluginListRequestHandler()).setAuthenticator(authenticator);
+
+            //Maintenance
+            getServer().createContext("/api/v1/maintenance/add/", new MaintenanceAddRequestHandler()).setAuthenticator(authenticator);
+            getServer().createContext("/api/v1/maintenance/remove/", new MaintenanceRemoveRequestHandler()).setAuthenticator(authenticator);
 
             getServer().setExecutor(null);
             getServer().start();
