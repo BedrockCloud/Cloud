@@ -45,6 +45,25 @@ group = "com.bedrockcloud"
 version = "1.0-SNAPSHOT"
 description = "Cloud"
 
+tasks {
+    javadoc {
+        options.encoding = "UTF-8"
+    }
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
+}
+
+tasks.withType<Jar>() {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+}
+
 publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
