@@ -37,7 +37,7 @@ dependencies {
     api(libs.org.jline.jline.reader)
     api(libs.org.ow2.asm.asm)
     testImplementation(libs.junit.junit)
-    api(libs.org.projectlombok.lombok)
+    annotationProcessor(libs.org.projectlombok.lombok)
 }
 
 group = "com.bedrockcloud"
