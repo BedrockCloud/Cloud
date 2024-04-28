@@ -16,6 +16,15 @@ repositories {
     maven {
         url = uri("https://repo.maven.apache.org/maven2/")
     }
+    maven {
+        url = uri("http://185.117.250.237:8081/repository/maven-central/")
+    }
+    maven {
+        url = uri("http://185.117.250.237:8081/repository/maven-releases/")
+    }
+    maven {
+        url = uri("http://185.117.250.237:8081/repository/maven-snapshots/")
+    }
 }
 
 java {
