@@ -41,7 +41,7 @@ public class MaintenanceRemoveRequestHandler implements HttpHandler {
         }
 
         String player = queryParams.get("player");
-        if (!Utils.isMaintenance(player)) {
+        if (Utils.isMaintenance(player)) {
             JSONObject responseObj = new JSONObject();
             responseObj.put("error", "Player " + player + " isn't in the maintenance list");
 
