@@ -5,6 +5,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    `maven-publish`
 }
 
 repositories {
@@ -48,5 +49,15 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
+    }
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
     }
 }

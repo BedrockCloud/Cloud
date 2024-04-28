@@ -24,3 +24,8 @@ jobs:
         with:
           name: bedrockcloud
           path: build/libs/Cloud-1.0-SNAPSHOT.jar
+      - name: Publish package
+        run: ./gradlew publish
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
