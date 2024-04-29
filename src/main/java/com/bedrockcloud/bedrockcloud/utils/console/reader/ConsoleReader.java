@@ -36,6 +36,9 @@ public class ConsoleReader extends Thread implements Loggable {
 
             while (Cloud.isRunning()) {
                 String input = lineReader.readLine();
+                if (input == null) {
+                    return;
+                }
 
                 ParsedLine pl = lineReader.getParsedLine();
                 String commandPart = pl.words().get(0);
