@@ -2,7 +2,7 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-com-google-code-gson-gson = "2.10.1"
+com-google-code-gson-gson = "2.11.0"
 com-google-guava-guava = "33.2.0-jre"
 com-googlecode-json-simple-json-simple = "1.1.1"
 dnsjava-dnsjava = "3.5.3"
