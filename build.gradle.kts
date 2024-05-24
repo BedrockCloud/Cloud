@@ -36,7 +36,7 @@ dependencies {
     api(libs.org.jline.jline.reader)
     api(libs.org.ow2.asm.asm)
     testImplementation(libs.junit.junit)
-    implementation("org.jetbrains:annotations:24.0.1")
+    implementation("org.jetbrains:annotations:24.1.0")
     implementation("org.projectlombok:lombok:1.18.32")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
