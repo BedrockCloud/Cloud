@@ -5,6 +5,8 @@ import com.bedrockcloud.bedrockcloud.network.DataPacket;
 import com.bedrockcloud.bedrockcloud.network.client.ClientRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import com.bedrockcloud.bedrockcloud.utils.console.Loggable;
@@ -64,6 +66,7 @@ public class PacketHandler implements Loggable {
         return new JSONObject();
     }
 
+    @SuppressWarnings("ClassNewInstance")
     public void handleCloudPacket(final JSONObject jsonObject, final ClientRequest clientRequest) {
         if (isLocalHost(clientRequest) && clientRequest.isAlive()) {
             Object packetNameObj = jsonObject.get("packetName");
@@ -72,9 +75,9 @@ public class PacketHandler implements Loggable {
                 Class<? extends DataPacket> packetClass = getPacketByName(packetName);
                 if (packetClass != null) {
                     try {
-                        DataPacket packet = packetClass.newInstance();
+                        DataPacket packet = packetClass.getConstructor().newInstance();
                         packet.handle(jsonObject, clientRequest);
-                    } catch (InstantiationException | IllegalAccessException ex) {
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                         Cloud.getLogger().exception(ex);
                     }
                 }
