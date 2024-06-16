@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@VersionInfo(name = "Cloud", version = "1.1.7", developers = { "xxFLORII" }, identifier = "@Stable")
+@VersionInfo(name = "Cloud", version = "1.1.8", developers = { "xxFLORII" }, identifier = "@BETA")
 public class Bootstrap {
 
     public static void main(String[] args) {
