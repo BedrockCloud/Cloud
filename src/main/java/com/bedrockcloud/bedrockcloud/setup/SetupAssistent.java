@@ -8,11 +8,6 @@ import org.jline.terminal.TerminalBuilder;
 import java.io.IOException;
 
 public class SetupAssistent {
-    int defaultCloudPort;
-    String defaultProxySoftware;
-    String defaultServerSoftware;
-    boolean enableRestapi;
-    boolean enableDebugMode;
 
     public SetupAssistent() {
         Terminal terminal = null;
