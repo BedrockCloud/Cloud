@@ -2,14 +2,16 @@ package com.bedrockcloud.bedrockcloud.utils;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
 import com.bedrockcloud.bedrockcloud.Bootstrap;
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.SoftwareUtils;
 import com.bedrockcloud.bedrockcloud.VersionInfo;
 import com.bedrockcloud.bedrockcloud.network.DataPacket;
 import com.bedrockcloud.bedrockcloud.network.packets.CloudNotifyMessagePacket;
 import com.bedrockcloud.bedrockcloud.server.cloudserver.CloudServer;
+import com.bedrockcloud.bedrockcloud.software.Software;
+import com.bedrockcloud.bedrockcloud.software.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.software.SoftwareType;
 import com.bedrockcloud.bedrockcloud.utils.config.Config;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
@@ -17,6 +19,8 @@ import java.lang.management.MemoryUsage;
 import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Utils {
     private static final String ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -151,7 +155,7 @@ public class Utils {
 
     public static void broadcastPacket(final DataPacket packet) {
         for (CloudServer server : Cloud.getCloudServerProvider().getCloudServers().values()) {
-            if (server.getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
+            if (server.getTemplate().getType().equals(SoftwareType.SERVER.getValue())) {
                 if (server.isConnected()) server.pushPacket(packet);
             }
         }
@@ -249,13 +253,8 @@ public class Utils {
         String directory;
         String startMethod;
 
-        if (server.getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
-            startMethod = "../../bin/php7/bin/php";
-            directory = "../../local/versions/pocketmine/PocketMine-MP.phar";
-        } else {
-            startMethod = "java -jar";
-            directory = "../../local/versions/waterdogpe/WaterdogPE.jar";
-        }
+        startMethod = "java -jar";
+        directory = SoftwareManager.getInstance().getSoftware(server.getTemplate().getSoftwareName()).getSoftwareWithPath();
 
         String commandPrefix = "";
 
@@ -263,7 +262,6 @@ public class Utils {
             case "screen":
                 commandPrefix = "screen -dmS " + server.getServerName() + " ";
                 break;
-
             default:
                 commandPrefix = "tmux new-session -d -s " + server.getServerName() + " ";
                 break;
@@ -278,5 +276,9 @@ public class Utils {
         } catch (Exception e) {
             Cloud.getLogger().exception(e);
         }
+    }
+
+    public static String formatSoftwareNames(Map<String, Software> softwares) {
+        return String.join("\n", softwares.keySet());
     }
 }

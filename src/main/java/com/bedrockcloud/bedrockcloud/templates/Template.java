@@ -4,7 +4,9 @@ import com.bedrockcloud.bedrockcloud.Cloud;
 import com.bedrockcloud.bedrockcloud.api.event.template.TemplateLoadEvent;
 import com.bedrockcloud.bedrockcloud.player.CloudPlayer;
 import com.bedrockcloud.bedrockcloud.server.cloudserver.CloudServer;
+import com.bedrockcloud.bedrockcloud.software.SoftwareManager;
 import com.bedrockcloud.bedrockcloud.utils.console.Loggable;
+import lombok.Getter;
 
 import java.util.HashMap;
 
@@ -13,20 +15,20 @@ public class Template implements Loggable {
     private final int minRunningServer;
     private final int maxRunningServer;
     private final int maxPlayers;
-    private final int type;
     private final Boolean isBeta;
     private final Boolean isMaintenance;
     private final Boolean isLobby;
     private final Boolean isStatic;
     private final HashMap<String, CloudServer> runningServers;
     private final HashMap<String, String> currentPlayers;
+    private final String softwareName;
 
-    public Template(String name, Integer minRunningServer, Integer maxRunningServer, Integer maxPlayers, Integer type, Boolean isBeta, Boolean isMaintenance, Boolean isLobby, Boolean isStatic) {
+    public Template(String name, Integer minRunningServer, Integer maxRunningServer, Integer maxPlayers, String softwareName, Boolean isBeta, Boolean isMaintenance, Boolean isLobby, Boolean isStatic) {
         this.name = name;
         this.minRunningServer = minRunningServer;
         this.maxRunningServer = maxRunningServer;
         this.maxPlayers = maxPlayers;
-        this.type = type;
+        this.softwareName = softwareName;
         this.isBeta = isBeta;
         this.isMaintenance = isMaintenance;
         this.isLobby = isLobby;
@@ -79,8 +81,12 @@ public class Template implements Loggable {
         return minRunningServer;
     }
 
-    public int getType() {
-        return type;
+    public String getSoftwareName() {
+        return softwareName;
+    }
+
+    public Integer getType() {
+        return SoftwareManager.getInstance().getSoftware(getSoftwareName()).getSoftwareType().getValue();
     }
 
     public void start(boolean force) {
@@ -134,6 +140,6 @@ public class Template implements Loggable {
 
     @Override
     public String toString() {
-        return "Template{name='" + name + '\'' + ", minRunningServer=" + minRunningServer + ", maxRunningServer=" + maxRunningServer + ", maxPlayers=" + maxPlayers + ", type='" + type + '\'' + '}';
+        return "Template{name='" + name + '\'' + ", minRunningServer=" + minRunningServer + ", maxRunningServer=" + maxRunningServer + ", maxPlayers=" + maxPlayers + ", type='" + SoftwareManager.getInstance().getSoftware(getSoftwareName()).getSoftwareType().getValue() + '\'' + '}';
     }
 }

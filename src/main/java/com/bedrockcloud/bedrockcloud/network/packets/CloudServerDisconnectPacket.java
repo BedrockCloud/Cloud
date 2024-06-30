@@ -1,7 +1,8 @@
 package com.bedrockcloud.bedrockcloud.network.packets;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.SoftwareUtils;
+import com.bedrockcloud.bedrockcloud.software.SoftwareType;
 import com.bedrockcloud.bedrockcloud.utils.Messages;
 import com.bedrockcloud.bedrockcloud.server.cloudserver.CloudServer;
 import com.bedrockcloud.bedrockcloud.utils.Utils;
@@ -25,7 +26,7 @@ public class CloudServerDisconnectPacket extends DataPacket
         server.setAliveChecks(0);
         final Template template = server.getTemplate();
         for (final CloudServer cloudServer : Cloud.getCloudServerProvider().getCloudServers().values()) {
-            if (cloudServer.getTemplate().getType() == SoftwareManager.SOFTWARE_PROXY) {
+            if (cloudServer.getTemplate().getType().equals(SoftwareType.PROXY.getValue())) {
                 final UnregisterServerPacket packet = new UnregisterServerPacket();
                 packet.addValue("serverName", serverName);
                 cloudServer.pushPacket(packet);

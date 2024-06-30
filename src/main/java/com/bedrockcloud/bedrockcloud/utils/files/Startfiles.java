@@ -2,21 +2,22 @@ package com.bedrockcloud.bedrockcloud.utils.files;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
 import com.bedrockcloud.bedrockcloud.api.GroupAPI;
+import com.bedrockcloud.bedrockcloud.software.Software;
+import com.bedrockcloud.bedrockcloud.software.SoftwareManager;
 import com.bedrockcloud.bedrockcloud.utils.Utils;
 import com.bedrockcloud.bedrockcloud.utils.config.Config;
-import com.bedrockcloud.bedrockcloud.utils.config.ConfigSection;
 import com.bedrockcloud.bedrockcloud.utils.console.Loggable;
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.SoftwareUtils;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class Startfiles implements Loggable {
     private final ArrayList<String> directories;
     private final int cloudPort;
 
     public Startfiles(int cloudPort) {
+        (new SoftwareUtils()).registerSoftwares();
         this.cloudPort = cloudPort;
         this.directories = new ArrayList<>();
         initializeDirectories();
@@ -28,13 +29,20 @@ public class Startfiles implements Loggable {
         this.directories.add("./temp");
         this.directories.add("./local");
         this.directories.add("./archive");
+        this.directories.add(this.directories.get(2) + "/versions");
         this.directories.add(this.directories.get(2) + "/plugins");
         this.directories.add(this.directories.get(2) + "/plugins/cloud");
-        this.directories.add(this.directories.get(2) + "/plugins/pocketmine");
-        this.directories.add(this.directories.get(2) + "/plugins/waterdogpe");
-        this.directories.add(this.directories.get(2) + "/versions");
-        this.directories.add(this.directories.get(2) + "/versions/pocketmine");
-        this.directories.add(this.directories.get(2) + "/versions/waterdogpe");
+        for (Software software : SoftwareManager.getInstance().getSoftwares().values()) {
+            String pluginsPath = software.getPluginsPath();
+            String versionPath = software.getSoftwarePath();
+            if (!this.directories.contains(pluginsPath)) {
+                this.directories.add(pluginsPath);
+            }
+
+            if (!this.directories.contains(versionPath)) {
+                this.directories.add(versionPath);
+            }
+        }
         this.directories.add(this.directories.get(2) + "/notify");
         this.directories.add(this.directories.get(3) + "/crashdumps");
         this.directories.add(this.directories.get(3) + "/processes");
@@ -102,17 +110,20 @@ public class Startfiles implements Loggable {
 
 
     private void downloadMissingFiles() {
-        downloadFile(SoftwareManager.POCKETMINE_URL, "./local/versions/pocketmine/PocketMine-MP.phar");
-        downloadFile(SoftwareManager.WATERDOGPE_URL, "./local/versions/waterdogpe/WaterdogPE.jar");
-        downloadFile(SoftwareManager.CLOUDBRIDGEPM_URL, "./local/plugins/pocketmine/CloudBridge-PM.phar");
-        downloadFile(SoftwareManager.DEVTOOLS_URL, "./local/plugins/pocketmine/DevTools.phar");
-        downloadFile(SoftwareManager.CLOUDBRIDGEWD_URL, "./local/plugins/waterdogpe/CloudBridge-WD.jar");
+        for (Software software : SoftwareManager.getInstance().getSoftwares().values()) {
+            if (software.getSoftwareType().name().equalsIgnoreCase("pocketmine")) {
+                downloadFile(software.getDownloadLink(), software.getSoftwarePath());
+                for (String plugin : software.getPlugins()) {
+                    downloadFile(plugin, software.getPluginsPath());
+                }
+            }
+        }
     }
 
     private void downloadFile(String url, String destination) {
         File file = new File(destination);
         if (!file.exists()) {
-            SoftwareManager.downloadAsync(url, destination).whenComplete((success, error) -> {
+            SoftwareUtils.downloadAsync(url, destination).whenComplete((success, error) -> {
                 if (success) {
                     Cloud.getLogger().info(file.getName() + " downloaded!");
                 } else {
@@ -123,7 +134,7 @@ public class Startfiles implements Loggable {
     }
 
     private void createDefaultGroups() {
-        GroupAPI.createGroup("Proxy-Master", SoftwareManager.SOFTWARE_PROXY, false);
-        GroupAPI.createGroup("Lobby", SoftwareManager.SOFTWARE_SERVER, true);
+        GroupAPI.createGroup("Proxy-Master", "WATERDOGPE", false);
+        GroupAPI.createGroup("Lobby", "NUKKIT", true);
     }
 }

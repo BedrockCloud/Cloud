@@ -2,6 +2,7 @@ package com.bedrockcloud.bedrockcloud.utils.command.defaults;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
 import com.bedrockcloud.bedrockcloud.api.GroupAPI;
+import com.bedrockcloud.bedrockcloud.software.SoftwareType;
 import com.bedrockcloud.bedrockcloud.templates.Template;
 import com.bedrockcloud.bedrockcloud.utils.command.Command;
 
@@ -34,7 +35,7 @@ public class TemplateCommand extends Command {
     private void listTemplates() {
         Cloud.getLogger().info("§e»§r §7There are currently " + Cloud.getTemplateProvider().getTemplateMap().size() + " templates loaded! §e«");
         for (Template template : Cloud.getTemplateProvider().getTemplateMap().values()) {
-            String type = template.getType() == 0 ? "WATERDOGPE" : "POCKETMINE";
+            String type = template.getType().equals(SoftwareType.PROXY.getValue()) ? "PROXY" : "SERVER";
             Cloud.getLogger().info("§c➤ §rName: " + template.getName() + " | Maintenance: " + template.isMaintenance() + " | Beta: " + template.isBeta() + " | TYPE: " + type);
         }
     }
@@ -98,8 +99,8 @@ public class TemplateCommand extends Command {
             String name = args[1];
             String type = args[2].toLowerCase();
             switch (type) {
-                case "waterdogpe" -> GroupAPI.createNewGroup(name, 0, false);
-                case "pocketmine" -> GroupAPI.createNewGroup(name, 1, false);
+                case "waterdogpe" -> GroupAPI.createNewGroup(name, "WATERDOGPE", false);
+                case "pocketmine" -> GroupAPI.createNewGroup(name, "POCKETMINE", false);
                 default ->
                         Cloud.getLogger().warning("Try to execute: template <create> <name> [pocketmine | waterdogpe]");
             }

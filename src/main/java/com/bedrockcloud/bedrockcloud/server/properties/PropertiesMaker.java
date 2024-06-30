@@ -1,7 +1,8 @@
 package com.bedrockcloud.bedrockcloud.server.properties;
 
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.SoftwareUtils;
 import com.bedrockcloud.bedrockcloud.server.cloudserver.CloudServer;
+import com.bedrockcloud.bedrockcloud.software.SoftwareType;
 import com.bedrockcloud.bedrockcloud.utils.Utils;
 import com.bedrockcloud.bedrockcloud.utils.config.Config;
 import org.jetbrains.annotations.ApiStatus;
@@ -13,7 +14,7 @@ public class PropertiesMaker {
     public static void createProperties(final CloudServer server) {
         final String serverName = server.getServerName();
         final int port = server.getServerPort();
-        if (server.getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
+        if (server.getTemplate().getType().equals(SoftwareType.SERVER.getValue())) {
             final StringBuilder sb = new StringBuilder();
             Objects.requireNonNull(server);
             final String filePath = sb.append("./temp/").append(serverName).append("/server.properties").toString();

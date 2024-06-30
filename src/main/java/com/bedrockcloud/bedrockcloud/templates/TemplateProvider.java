@@ -3,6 +3,9 @@ package com.bedrockcloud.bedrockcloud.templates;
 import com.bedrockcloud.bedrockcloud.Cloud;
 import com.bedrockcloud.bedrockcloud.api.GroupAPI;
 import com.bedrockcloud.bedrockcloud.api.event.template.TemplateUnloadEvent;
+import com.bedrockcloud.bedrockcloud.software.Software;
+import com.bedrockcloud.bedrockcloud.software.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.utils.Utils;
 import com.bedrockcloud.bedrockcloud.utils.console.Loggable;
 import com.bedrockcloud.bedrockcloud.utils.files.json.JsonUtils;
 import org.jetbrains.annotations.ApiStatus;
@@ -11,6 +14,8 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TemplateProvider implements Loggable {
     private final HashMap<String, Template> templateMap;
@@ -93,13 +98,19 @@ public class TemplateProvider implements Loggable {
                             int minRunningServer = stats.containsKey("minRunningServer") ? ((Number) stats.get("minRunningServer")).intValue() : 0;
                             int maxRunningServer = stats.containsKey("maxRunningServer") ? ((Number) stats.get("maxRunningServer")).intValue() : 0;
                             int maxPlayer = stats.containsKey("maxPlayer") ? ((Number) stats.get("maxPlayer")).intValue() : 0;
-                            int type = stats.containsKey("type") ? ((Number) stats.get("type")).intValue() : 0;
+                            String softwareName = stats.containsKey("softwareName") ? ((String) stats.get("softwareName")) : null;
                             boolean beta = stats.containsKey("beta") && (boolean) stats.get("beta");
                             boolean maintenance = stats.containsKey("maintenance") && (boolean) stats.get("maintenance");
                             boolean isLobby = stats.containsKey("isLobby") && (boolean) stats.get("isLobby");
                             boolean isStatic = stats.containsKey("isStatic") && (boolean) stats.get("isStatic");
 
-                            new Template(name, minRunningServer, maxRunningServer, maxPlayer, type, beta, maintenance, isLobby, isStatic);
+                            if (softwareName == null || SoftwareManager.getInstance().getSoftware(softwareName) == null) {
+                                Cloud.getLogger().warning("§cCant load Template §e" + name +  "§7: §cValue §7'§esoftwareName§7' §cis null or the selected software don't exists." +
+                                        "\n§cPlease use one of the following softwares: §r" + Utils.formatSoftwareNames(SoftwareManager.getInstance().getSoftwares()));
+                                return;
+                            }
+
+                            new Template(name, minRunningServer, maxRunningServer, maxPlayer, softwareName, beta, maintenance, isLobby, isStatic);
                             return;
                         }
                     }
@@ -130,13 +141,19 @@ public class TemplateProvider implements Loggable {
                                 int minRunningServer = stats.containsKey("minRunningServer") ? ((Number) stats.get("minRunningServer")).intValue() : 0;
                                 int maxRunningServer = stats.containsKey("maxRunningServer") ? ((Number) stats.get("maxRunningServer")).intValue() : 0;
                                 int maxPlayer = stats.containsKey("maxPlayer") ? ((Number) stats.get("maxPlayer")).intValue() : 0;
-                                int type = stats.containsKey("type") ? ((Number) stats.get("type")).intValue() : 0;
+                                String softwareName = stats.containsKey("softwareName") ? ((String) stats.get("softwareName")) : null;
                                 boolean beta = stats.containsKey("beta") && (boolean) stats.get("beta");
                                 boolean maintenance = stats.containsKey("maintenance") && (boolean) stats.get("maintenance");
                                 boolean isLobby = stats.containsKey("isLobby") && (boolean) stats.get("isLobby");
                                 boolean isStatic = stats.containsKey("isStatic") && (boolean) stats.get("isStatic");
 
-                                new Template(name, minRunningServer, maxRunningServer, maxPlayer, type, beta, maintenance, isLobby, isStatic);
+                                if (softwareName == null || SoftwareManager.getInstance().getSoftware(softwareName) == null) {
+                                    Cloud.getLogger().warning("§cCant load Template §e" + name +  "§7: §cValue §7'§esoftwareName§7' §cis null or the selected software don't exists." +
+                                            "\n§cPlease use one of the following softwares: §r" + Utils.formatSoftwareNames(SoftwareManager.getInstance().getSoftwares()));
+                                    return;
+                                }
+
+                                new Template(name, minRunningServer, maxRunningServer, maxPlayer, softwareName, beta, maintenance, isLobby, isStatic);
                                 break;
                             }
                         }

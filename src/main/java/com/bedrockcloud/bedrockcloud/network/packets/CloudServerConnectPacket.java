@@ -1,7 +1,7 @@
 package com.bedrockcloud.bedrockcloud.network.packets;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.software.SoftwareType;
 import com.bedrockcloud.bedrockcloud.utils.Messages;
 import com.bedrockcloud.bedrockcloud.server.cloudserver.CloudServer;
 import com.bedrockcloud.bedrockcloud.utils.Utils;
@@ -38,12 +38,12 @@ public class CloudServerConnectPacket extends DataPacket {
         server.setTask(new KeepALiveThread(server));
         service.scheduleAtFixedRate(server.getTask(), 0, 1, TimeUnit.SECONDS);
 
-        if (server.getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
+        if (server.getTemplate().getType().equals(SoftwareType.SERVER.getValue())) {
             final VersionInfoPacket versionInfoPacket = new VersionInfoPacket();
             server.pushPacket(versionInfoPacket);
 
             for (final CloudServer cloudServer : Cloud.getCloudServerProvider().getCloudServers().values()) {
-                if (cloudServer.getTemplate().getType() == SoftwareManager.SOFTWARE_PROXY) {
+                if (cloudServer.getTemplate().getType().equals(SoftwareType.PROXY.getValue())) {
                     final RegisterServerPacket packet = new RegisterServerPacket();
                     packet.addValue("serverPort", serverPort);
                     packet.addValue("serverName", serverName);
@@ -52,9 +52,9 @@ public class CloudServerConnectPacket extends DataPacket {
             }
         }
 
-        if (server.getTemplate().getType() == SoftwareManager.SOFTWARE_PROXY) {
+        if (server.getTemplate().getType().equals(SoftwareType.PROXY.getValue())) {
             for (final CloudServer cloudServer : Cloud.getCloudServerProvider().getCloudServers().values()) {
-                if (cloudServer.getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
+                if (cloudServer.getTemplate().getType().equals(SoftwareType.SERVER.getValue())) {
                     final RegisterServerPacket packet = new RegisterServerPacket();
                     packet.addValue("serverPort", cloudServer.getServerPort());
                     packet.addValue("serverName", cloudServer.getServerName());

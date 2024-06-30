@@ -1,8 +1,10 @@
 package com.bedrockcloud.bedrockcloud.api;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
 import com.bedrockcloud.bedrockcloud.api.event.template.TemplateCreateEvent;
+import com.bedrockcloud.bedrockcloud.software.Software;
+import com.bedrockcloud.bedrockcloud.software.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.software.SoftwareType;
 import com.bedrockcloud.bedrockcloud.templates.Template;
 import com.bedrockcloud.bedrockcloud.templates.TemplateProvider;
 import com.bedrockcloud.bedrockcloud.utils.console.Loggable;
@@ -74,14 +76,14 @@ public class GroupAPI implements Loggable {
     }
 
     @ApiStatus.Internal
-    public static void createGroup(final String name, final int type, final boolean lobby) {
+    public static void createGroup(final String name, final String softwareName, final boolean lobby) {
         if (isGroup(name)) {
             return;
         }
 
         try {
-            createTemplateDirectories(name, type);
-            createConfigEntry(name, type, lobby);
+            createTemplateDirectories(name, softwareName);
+            createConfigEntry(name, softwareName, lobby);
 
             Cloud.getLogger().debug("The Group " + name + " has been successfully created!");
         } catch (IOException e) {
@@ -89,15 +91,15 @@ public class GroupAPI implements Loggable {
         }
     }
 
-    public static void createNewGroup(final String name, final int type, final boolean lobby) {
+    public static void createNewGroup(final String name, final String softwareName, final boolean lobby) {
         if (isGroup(name)) {
             Cloud.getLogger().warning("§cThe template §e" + name + " §calready exists§7.");
             return;
         }
 
         try {
-            createTemplateDirectories(name, type);
-            createConfigEntry(name, type, lobby);
+            createTemplateDirectories(name, softwareName);
+            createConfigEntry(name, softwareName, lobby);
 
             Cloud.getLogger().debug("The Group " + name + " has been successfully created!");
             Cloud.getTemplateProvider().loadTemplate(name);
@@ -110,16 +112,18 @@ public class GroupAPI implements Loggable {
     }
 
     @ApiStatus.Internal
-    private static void createTemplateDirectories(String name, int type) throws IOException {
+    private static void createTemplateDirectories(String name, String softwareName) throws IOException {
         final ArrayList<String> directories = new ArrayList<>();
         directories.add("./templates/" + name);
 
-        if (type == SoftwareManager.SOFTWARE_SERVER) {
+        Software software = SoftwareManager.getInstance().getSoftware(softwareName);
+
+        if (software.getSoftwareType().equals(SoftwareType.SERVER)) {
             directories.add(directories.get(0) + "/crashdumps");
             directories.add(directories.get(0) + "/plugins");
             directories.add(directories.get(0) + "/plugin_data");
             directories.add(directories.get(0) + "/worlds");
-        } else if (type == SoftwareManager.SOFTWARE_PROXY) {
+        } else if (software.getSoftwareType().equals(SoftwareType.PROXY)) {
             directories.add(directories.get(0) + "/packs");
             directories.add(directories.get(0) + "/plugins");
         }
@@ -133,7 +137,7 @@ public class GroupAPI implements Loggable {
     }
 
     @ApiStatus.Internal
-    private static void createConfigEntry(String name, int type, boolean lobby) throws IOException {
+    private static void createConfigEntry(String name, String softwareName, boolean lobby) throws IOException {
         JSONArray templateArray = readTemplateConfig();
 
         JSONObject object = new JSONObject();
@@ -143,10 +147,10 @@ public class GroupAPI implements Loggable {
         object.put("maintenance", true);
         object.put("isStatic", false);
         object.put("isLobby", lobby);
-        object.put("type", type);
+        object.put("softwareName", softwareName);
         object.put("beta", false);
 
-        if (type == SoftwareManager.SOFTWARE_SERVER) {
+        if (SoftwareManager.getInstance().getSoftware(softwareName).getSoftwareType().equals(SoftwareType.SERVER)) {
             object.put("proxy", "Proxy-Master");
         }
 

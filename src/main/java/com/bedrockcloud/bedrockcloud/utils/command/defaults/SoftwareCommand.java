@@ -1,7 +1,8 @@
 package com.bedrockcloud.bedrockcloud.utils.command.defaults;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.SoftwareUtils;
+import com.bedrockcloud.bedrockcloud.software.SoftwareManager;
 import com.bedrockcloud.bedrockcloud.utils.console.Loggable;
 import com.bedrockcloud.bedrockcloud.utils.command.Command;
 
@@ -31,8 +32,8 @@ public class SoftwareCommand extends Command implements Loggable {
     }
 
     private void updateAllSoftwares() {
-        CompletableFuture<Boolean> pocketMineDownload = SoftwareManager.downloadAsync(SoftwareManager.POCKETMINE_URL, "./local/versions/pocketmine/PocketMine-MP.phar");
-        CompletableFuture<Boolean> waterdogPEDownload = SoftwareManager.downloadAsync(SoftwareManager.WATERDOGPE_URL, "./local/versions/waterdogpe/WaterdogPE.jar");
+        CompletableFuture<Boolean> pocketMineDownload = SoftwareUtils.downloadAsync(SoftwareManager.getInstance().getSoftware("POCKETMINE").getDownloadLink(), "./local/versions/pocketmine/PocketMine-MP.phar");
+        CompletableFuture<Boolean> waterdogPEDownload = SoftwareUtils.downloadAsync(SoftwareManager.getInstance().getSoftware("WATERDOGPE").getDownloadLink(), "./local/versions/waterdogpe/WaterdogPE.jar");
 
         CompletableFuture<Void> allDownloads = CompletableFuture.allOf(pocketMineDownload, waterdogPEDownload);
         allDownloads.whenComplete((result, error) -> {
@@ -45,7 +46,7 @@ public class SoftwareCommand extends Command implements Loggable {
     }
 
     private void updatePocketMine() {
-        SoftwareManager.downloadAsync(SoftwareManager.POCKETMINE_URL, "./local/versions/pocketmine/PocketMine-MP.phar").whenComplete((success, error) -> {
+        SoftwareUtils.downloadAsync(SoftwareManager.getInstance().getSoftware("POCKETMINE").getDownloadLink(), "./local/versions/pocketmine/PocketMine-MP.phar").whenComplete((success, error) -> {
             if (success) {
                 Cloud.getLogger().info("PocketMine updated successfully!");
             } else {
@@ -55,7 +56,7 @@ public class SoftwareCommand extends Command implements Loggable {
     }
 
     private void updateWaterdogPE() {
-        SoftwareManager.downloadAsync(SoftwareManager.WATERDOGPE_URL, "./local/versions/waterdogpe/WaterdogPE.jar").whenComplete((success, error) -> {
+        SoftwareUtils.downloadAsync(SoftwareManager.getInstance().getSoftware("WATERDOGPE").getDownloadLink(), "./local/versions/waterdogpe/WaterdogPE.jar").whenComplete((success, error) -> {
             if (success) {
                 Cloud.getLogger().info("WaterdogPE updated successfully!");
             } else {

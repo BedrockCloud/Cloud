@@ -3,7 +3,6 @@ package com.bedrockcloud.bedrockcloud.api.plugin;
 import com.bedrockcloud.bedrockcloud.Cloud;
 import com.bedrockcloud.bedrockcloud.utils.Utils;
 import com.bedrockcloud.bedrockcloud.utils.console.Logger;
-import com.google.common.base.Preconditions;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
@@ -29,7 +28,11 @@ public abstract class Plugin {
     private boolean initialized = false;
 
     protected final void init(PluginYAML description, Cloud cloud, File pluginFile ) {
-        Preconditions.checkArgument( !this.initialized, "Plugin has been already initialized!" );
+        if (this.initialized) {
+            Cloud.getLogger().warning("Plugin has been already initialized!");
+            return;
+        }
+
         this.initialized = true;
         this.description = description;
         this.cloud = cloud;
@@ -96,7 +99,10 @@ public abstract class Plugin {
      * returns true if the file overwrite / copy was successful
      */
     public boolean saveResource( String filename, String outputName, boolean replace ) {
-        Preconditions.checkArgument( filename != null && !filename.trim().isEmpty(), "Filename can not be null!" );
+        if (filename == null || filename.trim().isEmpty()) {
+            Cloud.getLogger().warning("Filename can not be null!");
+            return false;
+        }
 
         File file = new File( this.dataFolder, outputName );
         if ( file.exists() && !replace ) {

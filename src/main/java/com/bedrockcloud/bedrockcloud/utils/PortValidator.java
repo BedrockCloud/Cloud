@@ -2,7 +2,8 @@ package com.bedrockcloud.bedrockcloud.utils;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
 import com.bedrockcloud.bedrockcloud.server.cloudserver.CloudServer;
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.SoftwareUtils;
+import com.bedrockcloud.bedrockcloud.software.SoftwareType;
 
 import java.net.*;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ public final class PortValidator {
 
     public static int getNextServerPort(CloudServer server) {
         int port = PORTS_BOUNCE;
-        if (server.getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
+        if (server.getTemplate().getType().equals(SoftwareType.SERVER.getValue())) {
             while (isPortInUse(port) || isPortInUse(port + 1)) {
                 port++;
             }

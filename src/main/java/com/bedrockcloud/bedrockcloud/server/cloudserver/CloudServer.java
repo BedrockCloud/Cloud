@@ -1,7 +1,7 @@
 package com.bedrockcloud.bedrockcloud.server.cloudserver;
 
 import com.bedrockcloud.bedrockcloud.Cloud;
-import com.bedrockcloud.bedrockcloud.SoftwareManager;
+import com.bedrockcloud.bedrockcloud.software.SoftwareType;
 import com.bedrockcloud.bedrockcloud.utils.Messages;
 import com.bedrockcloud.bedrockcloud.api.event.server.ServerStartEvent;
 import com.bedrockcloud.bedrockcloud.api.event.server.ServerStopEvent;
@@ -68,7 +68,7 @@ public class CloudServer {
         this.template = template;
         this.aliveChecks = 0;
         this.serverName = template.getName() + Utils.getServiceSeparator() + FileUtils.getFreeNumber("./temp/" + template.getName());
-        if (getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
+        if (getTemplate().getType().equals(SoftwareType.SERVER.getValue())) {
             this.serverPort = PortValidator.getNextServerPort(this);
         } else {
             this.serverPort = PortValidator.getNextProxyServerPort(this);
@@ -161,14 +161,11 @@ public class CloudServer {
             PropertiesMaker.createProperties(this);
         }
 
-        if (getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
-            final File global_plugins = new File("./local/plugins/pocketmine");
-            final File dest_plugs = new File("./temp/" + this.serverName + "/plugins/");
-            FileUtils.copy(global_plugins, dest_plugs);
-        } else {
-            final File global_plugins = new File("./local/plugins/waterdogpe");
-            final File dest_plugs = new File("./temp/" + this.serverName + "/plugins/");
-            FileUtils.copy(global_plugins, dest_plugs);
+        final File global_plugins = new File("./local/plugins/" + getTemplate().getSoftwareName().toLowerCase());
+        final File dest_plugs = new File("./temp/" + this.serverName + "/plugins/");
+        FileUtils.copy(global_plugins, dest_plugs);
+
+        if (getTemplate().getType().equals(SoftwareType.PROXY.getValue())) {
             final Config config = new Config("./temp/" + this.serverName + "/cloud.yml", Config.YAML);
             config.set("name", this.serverName);
             config.save();
@@ -217,7 +214,7 @@ public class CloudServer {
         byte[] data = byteArrayOutputStream.toByteArray();
         try {
             InetAddress address;
-            if (getTemplate().getType() == SoftwareManager.SOFTWARE_SERVER) {
+            if (getTemplate().getType().equals(SoftwareType.SERVER.getValue())) {
                 address = InetAddress.getByName("127.0.0.1");
             } else {
                 address = InetAddress.getByName("0.0.0.0");
