@@ -37,8 +37,8 @@ dependencies {
     api(libs.org.ow2.asm.asm)
     testImplementation(libs.junit.junit)
     implementation("org.jetbrains:annotations:24.1.0")
-    implementation("org.projectlombok:lombok:1.18.32")
-    annotationProcessor("org.projectlombok:lombok:1.18.32")
+    implementation("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
 }
 
 group = "com.bedrockcloud"
